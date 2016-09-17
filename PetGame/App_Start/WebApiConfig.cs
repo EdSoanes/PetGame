@@ -1,6 +1,12 @@
-﻿using System;
+﻿using PetGame.Repositories;
+using PetGame.Repositories.Impl;
+using PetGame.Services;
+using PetGame.Services.Impl;
+using StructureMap;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Web.Http;
 
 namespace PetGame
@@ -10,15 +16,20 @@ namespace PetGame
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
+            var container = new Container(c =>
+            {
+                c.For<IUserRepository>().Use<UserRepository>().Singleton();
+                c.For<IGameService>().Use<GameService>().Singleton();
+            });
+
+            config.DependencyResolver = new StructureMapDependencyResolver(container);
 
             // Web API routes
-            config.MapHttpAttributeRoutes();
+            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
+            config.Formatters.JsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
 
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+            config.MapHttpAttributeRoutes();
         }
     }
 }

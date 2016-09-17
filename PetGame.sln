@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetGame", "PetGame\PetGame.csproj", "{B68224B7-6763-4E0D-895D-7C7A57D495E1}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "PetGame.Db", "PetGame.Db\PetGame.Db.sqlproj", "{8AFB9A47-79E6-4C3A-A270-08632447F5BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetGame.Repositories", "PetGame.Repositories\PetGame.Repositories.csproj", "{E68EA41C-6135-47F1-B9AF-05549147AFE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetGame.Models", "PetGame.Models\PetGame.Models.csproj", "{699AAB38-8440-4184-AD10-A9710F1172A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetGame.Services", "PetGame.Services\PetGame.Services.csproj", "{78F9842B-5F16-44E4-B747-7B503A9D6C18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +29,18 @@ Global
 		{8AFB9A47-79E6-4C3A-A270-08632447F5BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AFB9A47-79E6-4C3A-A270-08632447F5BB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8AFB9A47-79E6-4C3A-A270-08632447F5BB}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{E68EA41C-6135-47F1-B9AF-05549147AFE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E68EA41C-6135-47F1-B9AF-05549147AFE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E68EA41C-6135-47F1-B9AF-05549147AFE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E68EA41C-6135-47F1-B9AF-05549147AFE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{699AAB38-8440-4184-AD10-A9710F1172A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{699AAB38-8440-4184-AD10-A9710F1172A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{699AAB38-8440-4184-AD10-A9710F1172A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{699AAB38-8440-4184-AD10-A9710F1172A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78F9842B-5F16-44E4-B747-7B503A9D6C18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78F9842B-5F16-44E4-B747-7B503A9D6C18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78F9842B-5F16-44E4-B747-7B503A9D6C18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78F9842B-5F16-44E4-B747-7B503A9D6C18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
