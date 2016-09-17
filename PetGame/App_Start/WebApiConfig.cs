@@ -18,7 +18,10 @@ namespace PetGame
             // Web API configuration and services
             var container = new Container(c =>
             {
+                c.For<ISysTime>().Use<SysTime>().Singleton();
                 c.For<IUserRepository>().Use<UserRepository>().Singleton();
+                c.For<IPetTypeRepository>().Use<PetTypeRepository>().Singleton();
+                c.For<IPetRepository>().Use<PetRepository>().Singleton();
                 c.For<IGameService>().Use<GameService>().Singleton();
             });
 

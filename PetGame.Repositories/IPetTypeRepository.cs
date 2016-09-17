@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace PetGame.Repositories
 {
-    public interface IUserRepository
+    public interface IPetTypeRepository
     {
-        Task<User> GetUserByUserName(string userName);
-        Task<User> Save(User user);
+        Task<PetType> GetById(long petTypeId);
+        Task<IEnumerable<PetType>> GetAll();
     }
 }

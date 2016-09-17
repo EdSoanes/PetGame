@@ -9,6 +9,7 @@ using Dapper;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Reflection;
+using PetGame.Models;
 
 namespace PetGame.Repositories.Impl
 {
@@ -190,6 +191,58 @@ namespace PetGame.Repositories.Impl
             }
         }
 
+        protected async Task<T> BaseUpdateAsync<T>(T entity) where T : class
+        {
+            T existing = null;
+
+            var tbl = typeof(T).Name;
+            var pk = GetPrimaryKey<T>();
+            var id = GetPrimaryKeyValue<T>(entity);
+            var fields = GetNonPrimaryKeys<T>();
+
+            //Check to see if the entity already exists...
+            if (id > 0)
+                existing = BaseGetById<T>(id);
+
+            //If so then update the existing entity
+            if (existing != null)
+            {
+                var val = "";
+                foreach (var field in fields)
+                    val += string.Format("{0} = @{1}, ", field, field);
+
+                if (val.Length > 2)
+                    val = val.Substring(0, val.Length - 2);
+
+                //Create an update statement
+                var sql = string.Format("UPDATE [dbo].[{0}] SET {1} WHERE {2} = {3}", tbl, val, pk, id);
+
+                //Execute!
+                using (var conn = new SqlConnection(ConnString))
+                {
+                    await conn.OpenAsync();
+                    await conn.ExecuteAsync(sql, entity);
+
+                    return BaseGetById<T>(id);
+                }
+            }
+            else
+            {
+                var fieldList = "[" + string.Join("], [", fields) + "]";
+                var valList = "@" + string.Join(", @", fields);
+
+                var sql = string.Format("INSERT INTO [dbo].[{0}] ({1}) VALUES ({2});SELECT CAST(SCOPE_IDENTITY() as bigint)", tbl, fieldList, valList);
+
+                using (var conn = new SqlConnection(ConnString))
+                {
+                    await conn.OpenAsync();
+                    var newIds = await conn.QueryAsync<long>(sql, entity);
+                    var newId = newIds.Single();
+                    return BaseGetById<T>(newId);
+                }
+            }
+        }
+
         protected bool BaseDelete<T>(long id) where T : class
         {
             var tbl = typeof(T).Name;
@@ -292,7 +345,7 @@ namespace PetGame.Repositories.Impl
             foreach (PropertyInfo prop in t.GetProperties())
             {
                 object[] attributes = prop.GetCustomAttributes(true);
-                if (!attributes.Any(x => x is IgnoreAttribute || x is KeyAttribute))
+                if (!attributes.Any(x => x is RepoIgnoreAttribute || x is KeyAttribute))
                     res.Add(prop.Name);
             }
 

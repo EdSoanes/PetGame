@@ -10,6 +10,10 @@ namespace PetGame.Services
     public interface IGameService
     {
         Task<User> GetUserByUserName(string userName);
-        Task<User> CreateUser(User user);
+        Task<IEnumerable<PetType>> GetPetTypes();
+        Task<ApiResponse<User>> CreateUser(User user);
+        Task<ApiResponse<Pet>> CreatePet(string userName, long petTypeId, string petName);
+        Task<ApiResponse<Pet>> FeedPet(string userName, long petId);
+        Task<ApiResponse<Pet>> PetPet(string userName, long petId);
     }
 }

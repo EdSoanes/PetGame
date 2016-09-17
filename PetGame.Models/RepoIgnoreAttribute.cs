@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PetGame.Repositories.Impl
+namespace PetGame.Models
 {
     [System.AttributeUsage(System.AttributeTargets.Property)]
-    public class IgnoreAttribute : System.Attribute
+    public class RepoIgnoreAttribute : System.Attribute
     {
-        public IgnoreAttribute()
+        public RepoIgnoreAttribute()
         {
         }
     }

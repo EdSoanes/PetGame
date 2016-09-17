@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetGame.Models", "PetGame.M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetGame.Services", "PetGame.Services\PetGame.Services.csproj", "{78F9842B-5F16-44E4-B747-7B503A9D6C18}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetGame.Tests", "PetGame.Tests\PetGame.Tests.csproj", "{A6161D9B-514C-4C87-80CE-57BF2FEAEE77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{78F9842B-5F16-44E4-B747-7B503A9D6C18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78F9842B-5F16-44E4-B747-7B503A9D6C18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78F9842B-5F16-44E4-B747-7B503A9D6C18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6161D9B-514C-4C87-80CE-57BF2FEAEE77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6161D9B-514C-4C87-80CE-57BF2FEAEE77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6161D9B-514C-4C87-80CE-57BF2FEAEE77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6161D9B-514C-4C87-80CE-57BF2FEAEE77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
