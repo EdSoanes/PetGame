@@ -5,10 +5,10 @@ using PetGame.Repositories;
 using PetGame.Services.Impl;
 using System.Threading.Tasks;
 
-namespace PetGame.Tests
+namespace PetGame.Specs.Users
 {
     [Subject("creating a user")]
-    class when_creating_an_invalid_new_user_with_no_name : WithSubject<GameService>
+    class when_creating_a_valid_new_user : WithSubject<GameService>
     {
         Establish context = () =>
         {
@@ -23,17 +23,18 @@ namespace PetGame.Tests
 
         Because of = () => result = Subject.CreateUser(_newUser).Result;
 
-        It should_have_a_response = () => result.ShouldNotBeNull();
+        It should_be_created = () => result.ShouldNotBeNull();
 
-        It should_have_status_BadRequest = () => result.StatusCode.ShouldEqual(System.Net.HttpStatusCode.BadRequest);
+        It should_have_status_OK = () => result.StatusCode.ShouldEqual(System.Net.HttpStatusCode.OK);
 
-        It should_have_a_reason = () => result.Reason.ShouldEqual("No full name provided");
+        It should_have_a_new_user = () => result.Entity.ShouldNotBeNull();
 
-        It should_not_return_a_user_entity = () => result.Entity.ShouldBeNull();
+        It should_have_a_new_userId = () => result.Entity.UserId.ShouldNotEqual(0);
 
         private static User _newUser = new User
         {
-            UserName = "testUser"
+            UserName = "testUser",
+            FullName = "Full Name"
         };
 
         private static ApiResponse<User> result;

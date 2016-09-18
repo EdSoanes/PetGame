@@ -31,7 +31,10 @@ namespace PetGame.Controllers
                 if (funcResult is ApiResponseBase)
                 {
                     var apiResponse = funcResult as ApiResponseBase;
-                    return this.Request.CreateResponse(apiResponse.StatusCode, apiResponse.Value);
+                    if (apiResponse.StatusCode != HttpStatusCode.OK)
+                        return this.Request.CreateErrorResponse(apiResponse.StatusCode, apiResponse.Reason);
+                    else
+                        return this.Request.CreateResponse(apiResponse.StatusCode, apiResponse.Value);
                 }
 
                 return this.Request.CreateResponse<T>(funcResult);

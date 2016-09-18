@@ -11,6 +11,7 @@ namespace PetGame.Repositories
     {
         Task<IEnumerable<Pet>> GetPetsByUserName(string userName);
         Task<Pet> GetPetByUserNameAndTypeId(string userName, long petTypeId);
+        Task<Pet> GetPetByUserNameAndPetId(string userName, long petId);
         Task<Pet> Save(Pet user);
     }
 }

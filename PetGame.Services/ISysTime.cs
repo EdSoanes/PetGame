@@ -10,5 +10,6 @@ namespace PetGame.Services
     {
         DateTime Now { get; }
         DateTime Today { get; }
+        DateTime Min { get; }
     }
 }

@@ -34,6 +34,16 @@ namespace PetGame.Repositories.Impl
             return res.FirstOrDefault();
         }
 
+        public async Task<Pet> GetPetByUserNameAndPetId(string userName, long petId)
+        {
+            var sql = @"SELECT p.* FROM [dbo].[Pet] p
+                        INNER JOIN [dbo].[User] u ON u.UserId = p.UserId
+                        WHERE u.UserName = @userName AND p.PetId = @petId";
+
+            var res = await BaseGetAsync<Pet>(sql, new { userName = userName, petId = petId });
+            return res.FirstOrDefault();
+        }
+
         public async Task<Pet> Save(Pet pet)
         {
             return await BaseUpdateAsync<Pet>(pet);

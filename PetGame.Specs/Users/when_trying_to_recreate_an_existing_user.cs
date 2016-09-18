@@ -5,20 +5,14 @@ using PetGame.Repositories;
 using PetGame.Services.Impl;
 using System.Threading.Tasks;
 
-namespace PetGame.Tests
+namespace PetGame.Specs.Users
 {
-    [Subject("creating a user")]
-    class when_creating_a_valid_new_user : WithSubject<GameService>
+    [Subject("creating an existing user")]
+    class when_trying_to_recreate_an_existing_user : WithSubject<GameService>
     {
         Establish context = () =>
         {
-            The<IUserRepository>().WhenToldTo(dc => dc.GetUserByUserName("testUser")).Return(Task.FromResult<User>(null));
-            The<IUserRepository>().WhenToldTo(dc => dc.Save(_newUser)).Return(Task.FromResult<User>(new User
-                {
-                    UserId = 1,
-                    UserName = _newUser.UserName,
-                    FullName = _newUser.FullName
-                }));
+            The<IUserRepository>().WhenToldTo(dc => dc.GetUserByUserName("testUser")).Return(Task.FromResult<User>(_existingUser));
         };
 
         Because of = () => result = Subject.CreateUser(_newUser).Result;
@@ -29,7 +23,14 @@ namespace PetGame.Tests
 
         It should_have_a_new_user = () => result.Entity.ShouldNotBeNull();
 
-        It should_have_a_new_userId = () => result.Entity.UserId.ShouldNotEqual(0);
+        It should_have_a_new_userId = () => result.Entity.ShouldBeTheSameAs(_existingUser);
+
+        private static User _existingUser = new User
+        {
+            UserId = 1,
+            UserName = _newUser.UserName,
+            FullName = _newUser.FullName
+        };
 
         private static User _newUser = new User
         {

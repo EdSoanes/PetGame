@@ -28,16 +28,16 @@ namespace PetGame.Services.Impl
             _petTypeRepository = petTypeRepository;
         }
 
-        public async Task<User> GetUserByUserName(string userName)
+        public async Task<User> GetUserByUserName(string userName, DateTime? now = null)
         {
             var user =  await _userRepository.GetUserByUserName(userName);
             var pets = await _petRepository.GetPetsByUserName(userName);
             var petTypes = await GetPetTypes();
-            var now = _sysTime.Now;
+            now = now ?? _sysTime.Now;
 
             user.Pets = pets.ToList();
             foreach (var pet in user.Pets)
-                PetOps.UpdateStatus(pet, petTypes.First(x => x.PetTypeId == pet.PetTypeId), now);
+                PetOps.UpdateStatus(pet, petTypes.First(x => x.PetTypeId == pet.PetTypeId), now.Value);
 
             return user;
         }
@@ -64,14 +64,15 @@ namespace PetGame.Services.Impl
 
         public async Task<ApiResponse<Pet>> CreatePet(string userName, long petTypeId, string petName)
         {
-            var user = await GetUserByUserName(userName);
+            var now = _sysTime.Now;
+            var user = await GetUserByUserName(userName, now);
             var petType = await _petTypeRepository.GetById(petTypeId);
-
+            
             var response = PetOps.CanCreateNew(user, petType, petName, _sysTime.Now);
             if (response == null)
             {
-                var pet = PetOps.New(user, petType, petName, _sysTime.Now);
-                response = new ApiResponse<Pet>(pet);
+                var pet = PetOps.New(user, petType, petName, _sysTime.Now, _sysTime.Min);
+                response = await SavePet(pet, petType, now);
             }
 
             return await Task.FromResult<ApiResponse<Pet>>(response);
@@ -79,15 +80,18 @@ namespace PetGame.Services.Impl
 
         public async Task<ApiResponse<Pet>> FeedPet(string userName, long petId)
         {
-            var user = await GetUserByUserName(userName);
+            var now = _sysTime.Now;
+
+            var user = await GetUserByUserName(userName, now);
             var pet = user.Pets.FirstOrDefault(x => x.PetId == petId);
             var petType = await _petTypeRepository.GetById(pet.PetTypeId);
 
-            var response = PetOps.CanFeed(pet, petType, _sysTime.Now);
+            PetOps.UpdateStatus(pet, petType, now);
+            var response = PetOps.CanFeed(pet, petType, now);
             if (response == null)
             {
-                PetOps.Feed(pet, petType);
-                response = new ApiResponse<Pet>(pet, System.Net.HttpStatusCode.OK);
+                PetOps.Feed(pet, petType, now);
+                response = await SavePet(pet, petType, now);
             }
 
             return await Task.FromResult<ApiResponse<Pet>>(response);
@@ -95,18 +99,29 @@ namespace PetGame.Services.Impl
 
         public async Task<ApiResponse<Pet>> PetPet(string userName, long petId)
         {
-            var user = await GetUserByUserName(userName);
-            var pet = user.Pets.FirstOrDefault(x => x.PetId == petId);
+            var now = _sysTime.Now;
+            var user = await _userRepository.GetUserByUserName(userName);
+            var pet = await _petRepository.GetPetByUserNameAndPetId(userName, petId);
             var petType = await _petTypeRepository.GetById(pet.PetTypeId);
 
-            var response = PetOps.CanPet(pet, petType, _sysTime.Now);
+            PetOps.UpdateStatus(pet, petType, now);
+            var response = PetOps.CanPet(pet, petType, now);
             if (response == null)
             {
-                PetOps.Pet(pet, petType);
-                response = new ApiResponse<Pet>(pet, System.Net.HttpStatusCode.OK);
+                PetOps.Pet(pet, petType, now);
+                response = await SavePet(pet, petType, now);
             }
 
             return await Task.FromResult<ApiResponse<Pet>>(response);
+        }
+
+        private async Task<ApiResponse<Pet>> SavePet(Pet pet, PetType petType, DateTime now)
+        {
+            pet.LastUpdatedTime = now;
+            pet = await _petRepository.Save(pet);
+            PetOps.UpdateStatus(pet, petType, now);
+
+            return new ApiResponse<Pet>(pet);
         }
     }
 }

@@ -32,14 +32,14 @@ namespace PetGame.Controllers
             return await Execute<ApiResponse<Pet>>(() => GameService.CreatePet(userName, pet.PetTypeId, pet.Name));
         }
 
-        [Route("{username}/pet/{petId:long}/feed")]
+        [Route("{username}/pets/{petId:long}/feed")]
         [HttpPost]
         public async Task<HttpResponseMessage> Feed(string userName, long petId)
         {
             return await Execute<ApiResponse<Pet>>(() => GameService.FeedPet(userName, petId));
         }
 
-        [Route("{username}/pet/{petId:long}/pet")]
+        [Route("{username}/pets/{petId:long}/pet")]
         [HttpPost]
         public async Task<HttpResponseMessage> Pet(string userName, long petId)
         {

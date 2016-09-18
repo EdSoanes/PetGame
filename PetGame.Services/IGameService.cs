@@ -9,7 +9,7 @@ namespace PetGame.Services
 {
     public interface IGameService
     {
-        Task<User> GetUserByUserName(string userName);
+        Task<User> GetUserByUserName(string userName, DateTime? now = null);
         Task<IEnumerable<PetType>> GetPetTypes();
         Task<ApiResponse<User>> CreateUser(User user);
         Task<ApiResponse<Pet>> CreatePet(string userName, long petTypeId, string petName);

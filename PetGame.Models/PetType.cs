@@ -12,15 +12,13 @@ namespace PetGame.Models
         [Key]
         public long PetTypeId { get; set; }
         public string Name { get; set; }
-        public int MaxHealth { get; set; }
+        public int MaxHunger { get; set; }
         public int MaxHappiness { get; set; }
-        public int StartingHealth { get; set; }
-        public int StartingHappiness { get; set; }
         public int FeedInterval { get; set; }
         public int PettingInterval { get; set; }
-        public int HealthDecreasePerMin { get; set; }
+        public int HungerIncreasePerMin { get; set; }
         public int HappinessDecreasePerMin { get; set; }
-        public int HealthIncreasePerFeed { get; set; }
+        public int HungerDecreasePerFeed { get; set; }
         public int HappinessIncreasePerPet { get; set; }
     }
 }

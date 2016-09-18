@@ -17,5 +17,10 @@ namespace PetGame.Services.Impl
         {
             get { return DateTime.Today; } 
         }
+
+        public DateTime Min
+        {
+            get { return DateTime.MinValue; }
+        }
     }
 }

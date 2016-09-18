@@ -68,4 +68,7 @@
   <ItemGroup>
     <None Include="PetGame.Db.publish.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="PetGame.Db.refactorlog" />
+  </ItemGroup>
 </Project>
