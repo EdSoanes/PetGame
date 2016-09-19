@@ -107,7 +107,7 @@ namespace PetGame.Services.Ops
             animal.IsDead = animal.Hunger >= animalType.MaxHunger || animal.Happiness == 0;
 
             var hungerIdx = HungerTexts.Length - 1;
-            if (!animal.IsDead)
+            if (animal.Hunger < animalType.MaxHunger)
             {
                 var step = animalType.MaxHunger / (double)(HungerTexts.Length - 1);
                 hungerIdx = Convert.ToInt32(Math.Floor(animal.Hunger / step));
@@ -115,7 +115,7 @@ namespace PetGame.Services.Ops
             animal.HungerText = HungerTexts[hungerIdx];
 
             var happinessIdx = 0;
-            if (!animal.IsDead)
+            if (animal.Happiness > 0)
             {
                 var step = animalType.MaxHappiness / (double)(HappinessTexts.Length - 1);
                 happinessIdx = Convert.ToInt32(Math.Ceiling(animal.Happiness / step));
