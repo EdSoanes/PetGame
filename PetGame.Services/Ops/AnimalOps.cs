@@ -102,7 +102,7 @@ namespace PetGame.Services.Ops
         {
             var periodSinceLastUpdate = (now - animal.LastUpdatedTime).TotalMinutes;
             animal.Hunger = Math.Min(animalType.MaxHunger, animal.Hunger + Convert.ToInt32(Math.Floor(animalType.HungerIncreasePerMin * periodSinceLastUpdate)));
-            animal.Happiness -= Math.Max(Convert.ToInt32(Math.Floor(animalType.HappinessDecreasePerMin * periodSinceLastUpdate)), 0);
+            animal.Happiness = Math.Max(0, animal.Happiness - Convert.ToInt32(Math.Floor(animalType.HappinessDecreasePerMin * periodSinceLastUpdate)));
 
             animal.IsDead = animal.Hunger >= animalType.MaxHunger || animal.Happiness == 0;
 

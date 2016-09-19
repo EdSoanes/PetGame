@@ -229,5 +229,32 @@ namespace PetGame.Tests.AnimalOps
             Assert.AreEqual(animal.Happiness, 30);
             Assert.AreEqual(Op.AnimalOps.HappinessTexts[3], animal.HappinessText);
         }
+
+        [TestMethod]
+        public void this_animal_is_dead_after_100_mins()
+        {
+            var now = new DateTime(2000, 01, 01, 12, 00, 00);
+            var then = now.AddMinutes(-100);
+            var animal = new Animal
+            {
+                AnimalId = 1,
+                UserId = 1,
+                AnimalTypeId = 1,
+                Hunger = 50,
+                LastFeedTime = then,
+                LastPetTime = then,
+                LastUpdatedTime = then,
+                Happiness = 50
+            };
+
+            var animalType = EntityFactory.AutomatonType();
+
+            Op.AnimalOps.UpdateStatus(animal, animalType, now);
+
+            Assert.IsTrue(animal.IsDead);
+            Assert.AreEqual(0, animal.Happiness);
+            Assert.AreEqual(Op.AnimalOps.HappinessTexts[0], animal.HappinessText);
+        }
+
     }
 }
