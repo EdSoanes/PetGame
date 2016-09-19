@@ -8,7 +8,10 @@ Pet Game Server
 ##Tests
 * Install the mspec test adapter from https://visualstudiogallery.msdn.microsoft.com/4abcb54b-53b5-4c44-877f-0397556c5c44
 * Not complete code coverage but demonstrates that everything but DB repositories testable
- 
+
+##Database
+* There is a DB project included in the solution with a definition and a script with 3 animal types that can be installed into the DB if required
+
 ##API Calls
 Use Postman, Fiddler or similar to make API calls.
 * Available in Azure
