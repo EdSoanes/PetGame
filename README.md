@@ -10,7 +10,7 @@ Pet Game Server
 * Not complete code coverage but demonstrates that everything but DB repositories testable
 
 ##Database
-* There is a DB project included in the solution with a definition and a script with 3 animal types that can be installed into the DB if required
+* There is a DB project included in the solution including a script with 3 animal types that can be installed into the DB if required
 
 ##API Calls
 Use Postman, Fiddler or similar to make API calls.
