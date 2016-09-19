@@ -56,6 +56,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AnimalOps\when_updating_an_animals_status_happiness.cs" />
     <Compile Include="EntityFactory.cs" />
     <Compile Include="AnimalOps\when_feeding_an_animal.cs" />
     <Compile Include="AnimalOps\when_updating_an_animals_status_hunger.cs" />
