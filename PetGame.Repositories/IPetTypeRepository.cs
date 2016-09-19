@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace PetGame.Repositories
 {
-    public interface IPetTypeRepository
+    public interface IAnimalTypeRepository
     {
-        Task<PetType> GetById(long petTypeId);
-        Task<IEnumerable<PetType>> GetAll();
+        AnimalType GetById(long animalTypeId);
+        IEnumerable<AnimalType> GetAll();
     }
 }

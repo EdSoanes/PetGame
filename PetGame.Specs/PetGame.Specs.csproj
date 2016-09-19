@@ -108,8 +108,8 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Pets\when_feeding_a_hungry_pet.cs" />
-    <Compile Include="PetsController\when_GETting_a_list_of_pet_types.cs" />
+    <Compile Include="Animals\when_feeding_a_hungry_animal.cs" />
+    <Compile Include="AnimalsController\when_GETting_a_list_of_animal_types.cs" />
     <Compile Include="Users\when_creating_an_invalid_new_user_with_no_name.cs" />
     <Compile Include="Users\when_trying_to_recreate_an_existing_user.cs" />
     <Compile Include="Users\when_creating_a_valid_new_user.cs" />

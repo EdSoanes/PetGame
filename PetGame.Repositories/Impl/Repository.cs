@@ -123,7 +123,7 @@ namespace PetGame.Repositories.Impl
                 conn.Open();
 
                 var tableName = typeof(T).Name;
-                var query = string.Format("SELECT * FROM {0} ", tableName);
+                var query = string.Format("SELECT * FROM [{0}] ", tableName);
                 var res = conn.Query<T>(query);
 
                 return res;
@@ -163,7 +163,7 @@ namespace PetGame.Repositories.Impl
                     val = val.Substring(0, val.Length - 2);
 
                 //Create an update statement
-                var sql = string.Format("UPDATE {0} SET {1} WHERE {2} = {3}", tbl, val, pk, id);
+                var sql = string.Format("UPDATE [{0}] SET {1} WHERE {2} = {3}", tbl, val, pk, id);
 
                 //Execute!
                 using (var conn = new SqlConnection(ConnString))
@@ -179,7 +179,7 @@ namespace PetGame.Repositories.Impl
                 var fieldList = "[" + string.Join("], [", fields) + "]";
                 var valList = "@" + string.Join(", @", fields);
 
-                var sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2});SELECT CAST(SCOPE_IDENTITY() as int)", tbl, fieldList, valList);
+                var sql = string.Format("INSERT INTO [{0}] ({1}) VALUES ({2});SELECT CAST(SCOPE_IDENTITY() as int)", tbl, fieldList, valList);
 
                 using (var conn = new SqlConnection(ConnString))
                 {
@@ -215,7 +215,7 @@ namespace PetGame.Repositories.Impl
                     val = val.Substring(0, val.Length - 2);
 
                 //Create an update statement
-                var sql = string.Format("UPDATE [dbo].[{0}] SET {1} WHERE {2} = {3}", tbl, val, pk, id);
+                var sql = string.Format("UPDATE [{0}] SET {1} WHERE {2} = {3}", tbl, val, pk, id);
 
                 //Execute!
                 using (var conn = new SqlConnection(ConnString))
@@ -231,7 +231,7 @@ namespace PetGame.Repositories.Impl
                 var fieldList = "[" + string.Join("], [", fields) + "]";
                 var valList = "@" + string.Join(", @", fields);
 
-                var sql = string.Format("INSERT INTO [dbo].[{0}] ({1}) VALUES ({2});SELECT CAST(SCOPE_IDENTITY() as bigint)", tbl, fieldList, valList);
+                var sql = string.Format("INSERT INTO [{0}] ({1}) VALUES ({2});SELECT CAST(SCOPE_IDENTITY() as bigint)", tbl, fieldList, valList);
 
                 using (var conn = new SqlConnection(ConnString))
                 {
@@ -247,7 +247,7 @@ namespace PetGame.Repositories.Impl
         {
             var tbl = typeof(T).Name;
             var pk = GetPrimaryKey<T>();
-            var sql = string.Format("DELETE FROM {0} WHERE {1} = {2}", tbl, pk, id);
+            var sql = string.Format("DELETE FROM [{0}] WHERE {1} = {2}", tbl, pk, id);
 
             using (var conn = new SqlConnection(ConnString))
             {
@@ -260,7 +260,7 @@ namespace PetGame.Repositories.Impl
         {
             var tbl = typeof(T).Name;
             var pk = GetPrimaryKey<T>();
-            var sql = string.Format("DELETE FROM {0} WHERE {1} = '{2}'", tbl, pk, id);
+            var sql = string.Format("DELETE FROM [{0}] WHERE {1} = '{2}'", tbl, pk, id);
 
             using (var conn = new SqlConnection(ConnString))
             {
@@ -277,7 +277,7 @@ namespace PetGame.Repositories.Impl
                 {
                     conn.Open();
                     var tbl = typeof(T).Name;
-                    var query = string.Format("SELECT * FROM {0} WHERE {1} = {2}", tbl, key, id);
+                    var query = string.Format("SELECT * FROM [{0}] WHERE {1} = {2}", tbl, key, id);
                     var res = conn.Query<T>(query);
 
                     return res;
@@ -295,7 +295,7 @@ namespace PetGame.Repositories.Impl
                 {
                     conn.Open();
                     var tbl = typeof(T).Name;
-                    var query = string.Format("SELECT * FROM {0} WHERE {1} = '{2}'", tbl, key, id);
+                    var query = string.Format("SELECT * FROM [{0}] WHERE {1} = '{2}'", tbl, key, id);
                     var res = conn.Query<T>(query);
 
                     return res;
@@ -313,7 +313,7 @@ namespace PetGame.Repositories.Impl
                 {
                     conn.Open();
                     var tbl = typeof(T).Name;
-                    var query = string.Format("SELECT * FROM {0} WHERE {1} IN ({2})", tbl, key, string.Join(", ", ids.Select(x => x.ToString())));
+                    var query = string.Format("SELECT * FROM [{0}] WHERE {1} IN ({2})", tbl, key, string.Join(", ", ids.Select(x => x.ToString())));
                     var res = conn.Query<T>(query);
 
                     return res;

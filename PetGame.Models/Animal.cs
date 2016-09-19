@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace PetGame.Models
 {
-    public class Pet
+    public class Animal
     {
         [Key]
-        public long PetId { get; set; }
+        public long AnimalId { get; set; }
         public long UserId { get; set; }
-        public long PetTypeId { get; set; }
+        public long AnimalTypeId { get; set; }
         public string Name { get; set; }
         public int Hunger { get; set; }
         public DateTime LastFeedTime { get; set; }

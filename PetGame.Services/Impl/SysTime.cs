@@ -20,7 +20,7 @@ namespace PetGame.Services.Impl
 
         public DateTime Min
         {
-            get { return DateTime.MinValue; }
+            get { return new DateTime(1970, 01, 01); }
         }
     }
 }

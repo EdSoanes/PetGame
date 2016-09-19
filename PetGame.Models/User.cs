@@ -14,6 +14,11 @@ namespace PetGame.Models
         public string FullName { get; set; }
 
         [RepoIgnore]
-        public IEnumerable<Pet> Pets { get; set; }
+        public IEnumerable<Animal> Animals { get; set; }
+
+        public User()
+        {
+            Animals = new List<Animal>();
+        }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PetGame.Services.Ops
 {
-    public static class PetOps
+    public static class AnimalOps
     {
         public static string[] HungerTexts = 
         {
@@ -27,29 +27,33 @@ namespace PetGame.Services.Ops
             "Ecstatic"
         };
 
-        public static ApiResponse<Pet> CanCreateNew(User user, PetType petType, string name, DateTime now)
+        public static ApiResponse<Animal> CanCreateNew(User user, AnimalType animalType, string name, DateTime now)
         {
             var msg = string.Empty;
-            if (petType == null)
-                return new ApiResponse<Pet>(null, System.Net.HttpStatusCode.BadRequest, "You need to choose which pet type you want");
 
-            var pet = user.Pets.FirstOrDefault(x => x.PetTypeId == petType.PetTypeId && !x.IsDead);
+            if (string.IsNullOrEmpty(name))
+                return new ApiResponse<Animal>(null, System.Net.HttpStatusCode.BadRequest, "Give your animal a name!");
+
+            if (animalType == null)
+                return new ApiResponse<Animal>(null, System.Net.HttpStatusCode.BadRequest, "You need to choose which animal type you want");
+
+            var pet = user.Animals.FirstOrDefault(x => x.AnimalTypeId == animalType.AnimalTypeId && !x.IsDead);
             if (pet != null)
-                return new ApiResponse<Pet>(null, System.Net.HttpStatusCode.BadRequest, "You already have that kind of pet");
+                return new ApiResponse<Animal>(null, System.Net.HttpStatusCode.BadRequest, "You already have that kind of animal");
 
             return null;
         }
 
-        public static Pet New(User user, PetType petType, string name, DateTime now, DateTime min)
+        public static Animal New(User user, AnimalType animalType, string name, DateTime now, DateTime min)
         {
-            var res = new Pet
+            var res = new Animal
             {
                 UserId = user.UserId,
-                PetTypeId = petType.PetTypeId,
+                AnimalTypeId = animalType.AnimalTypeId,
                 Name = name,
-                Hunger = HungerNeutral(petType.MaxHunger),
+                Hunger = HungerNeutral(animalType.MaxHunger),
                 LastFeedTime = min,
-                Happiness = HappinessNeutral(petType.MaxHappiness),
+                Happiness = HappinessNeutral(animalType.MaxHappiness),
                 LastPetTime = min,
                 LastUpdatedTime = now
             };
@@ -57,60 +61,60 @@ namespace PetGame.Services.Ops
             return res;
         }
 
-        public static ApiResponse<Pet> CanFeed(Pet pet, PetType petType, DateTime now)
+        public static ApiResponse<Animal> CanFeed(Animal animal, AnimalType animalType, DateTime now)
         {
-            if (pet.IsDead)
-                return new ApiResponse<Pet>(pet, System.Net.HttpStatusCode.BadRequest, "Your pet is dead!");
+            if (animal.IsDead)
+                return new ApiResponse<Animal>(animal, System.Net.HttpStatusCode.BadRequest, "Your animal is dead!");
 
-            if (pet.LastFeedTime.AddMinutes(petType.FeedInterval) > now)
-                return new ApiResponse<Pet>(pet, System.Net.HttpStatusCode.BadRequest, "You can't feed your pet more food yet!");
+            if (animal.LastFeedTime.AddMinutes(animalType.FeedInterval) > now)
+                return new ApiResponse<Animal>(animal, System.Net.HttpStatusCode.BadRequest, "You can't feed your animal more food yet!");
 
-            if (pet.Hunger == 0)
-                return new ApiResponse<Pet>(pet, System.Net.HttpStatusCode.BadRequest, "Your pet is full");
+            if (animal.Hunger == 0)
+                return new ApiResponse<Animal>(animal, System.Net.HttpStatusCode.BadRequest, "Your animal is full");
 
             return null;
         }
 
-        public static void Feed(Pet pet, PetType petType, DateTime now)
+        public static void Feed(Animal animal, AnimalType animalType, DateTime now)
         {
-            pet.Hunger = Math.Max(pet.Hunger - petType.HungerDecreasePerFeed, 0);
-            pet.LastFeedTime = now;
+            animal.Hunger = Math.Max(animal.Hunger - animalType.HungerDecreasePerFeed, 0);
+            animal.LastFeedTime = now;
         }
 
-        public static ApiResponse<Pet> CanPet(Pet pet, PetType petType, DateTime now)
+        public static ApiResponse<Animal> CanPet(Animal pet, AnimalType petType, DateTime now)
         {
             if (pet.IsDead)
-                return new ApiResponse<Pet>(pet, System.Net.HttpStatusCode.BadRequest, "Your pet is dead!");
+                return new ApiResponse<Animal>(pet, System.Net.HttpStatusCode.BadRequest, "Your animal is dead!");
 
             if (pet.LastPetTime.AddMinutes(petType.PettingInterval) > now)
-                return new ApiResponse<Pet>(pet, System.Net.HttpStatusCode.BadRequest, "Your pet has been petted enough!");
+                return new ApiResponse<Animal>(pet, System.Net.HttpStatusCode.BadRequest, "Your animal has been petted enough!");
 
             return null;
         }
 
-        public static void Pet(Pet pet, PetType petType, DateTime now)
+        public static void Pet(Animal animal, AnimalType animalType, DateTime now)
         {
-            pet.Happiness = Math.Max(pet.Happiness + petType.HappinessIncreasePerPet, petType.MaxHappiness);
-            pet.LastPetTime = now;
+            animal.Happiness = Math.Max(animal.Happiness + animalType.HappinessIncreasePerPet, animalType.MaxHappiness);
+            animal.LastPetTime = now;
         }
 
-        public static void UpdateStatus(Pet pet, PetType petType, DateTime now)
+        public static void UpdateStatus(Animal animal, AnimalType animalType, DateTime now)
         {
-            var periodSinceLastUpdate = (now - pet.LastUpdatedTime).TotalMinutes;
-            pet.Hunger = Math.Min(petType.MaxHunger, pet.Hunger + Convert.ToInt32(Math.Floor(petType.HungerIncreasePerMin * periodSinceLastUpdate)));
-            pet.Happiness -= Math.Max(Convert.ToInt32(Math.Floor(petType.HappinessDecreasePerMin * periodSinceLastUpdate)), 0);
+            var periodSinceLastUpdate = (now - animal.LastUpdatedTime).TotalMinutes;
+            animal.Hunger = Math.Min(animalType.MaxHunger, animal.Hunger + Convert.ToInt32(Math.Floor(animalType.HungerIncreasePerMin * periodSinceLastUpdate)));
+            animal.Happiness -= Math.Max(Convert.ToInt32(Math.Floor(animalType.HappinessDecreasePerMin * periodSinceLastUpdate)), 0);
 
-            pet.IsDead = pet.Hunger >= petType.MaxHunger || pet.Happiness == 0;
+            animal.IsDead = animal.Hunger >= animalType.MaxHunger || animal.Happiness == 0;
 
-            var hungerIdx = pet.IsDead 
+            var hungerIdx = animal.IsDead 
                 ? HungerTexts.Length - 1
-                : Convert.ToInt32(Math.Floor((double)pet.Hunger / (petType.MaxHunger / (HungerTexts.Length - 1))));
-            pet.HungerText = HungerTexts[hungerIdx];
+                : Convert.ToInt32(Math.Floor((double)animal.Hunger / (animalType.MaxHunger / (HungerTexts.Length - 1))));
+            animal.HungerText = HungerTexts[hungerIdx];
 
-            var happinessIdx = pet.IsDead 
+            var happinessIdx = animal.IsDead 
                 ? 0 
-                : Math.Max(0, Convert.ToInt32(Math.Ceiling((double)pet.Happiness / (petType.MaxHappiness / HappinessTexts.Length))) - 1);
-            pet.HappinessText = HappinessTexts[happinessIdx];
+                : Math.Max(0, Convert.ToInt32(Math.Ceiling((double)animal.Happiness / (animalType.MaxHappiness / HappinessTexts.Length))) - 1);
+            animal.HappinessText = HappinessTexts[happinessIdx];
         }
 
         private static int HungerNeutral(int maxHunger)

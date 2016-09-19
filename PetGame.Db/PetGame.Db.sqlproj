@@ -59,14 +59,17 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
+    <Folder Include="Scripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\User.sql" />
-    <Build Include="Tables\PetType.sql" />
-    <Build Include="Tables\Pet.sql" />
+    <Build Include="Tables\AnimalType.sql" />
+    <Build Include="Tables\Animal.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PetGame.Db.publish.xml" />
+    <None Include="PetGame.Db.local.publish.xml" />
+    <None Include="Scripts\AddPetTypes.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PetGame.Db.refactorlog" />

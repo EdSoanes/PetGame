@@ -11,39 +11,39 @@ using System.Web.Http;
 namespace PetGame.Controllers
 {
     [RoutePrefix("users")]
-    public class PetsController : BaseController
+    public class AnimalsController : BaseController
     {
-        public PetsController(IGameService gameService)
+        public AnimalsController(IGameService gameService)
             : base(gameService)
         {
         }
 
-        [Route("~/pettypes")]
+        [Route("~/animaltypes")]
         [HttpGet]
-        public async Task<HttpResponseMessage> GetPetTypes()
+        public async Task<HttpResponseMessage> GetAnimalTypes()
         {
-            return await Execute<IEnumerable<PetType>>(() => GameService.GetPetTypes());
+            return await Execute<IEnumerable<AnimalType>>(() => Task.FromResult<IEnumerable<AnimalType>>(GameService.GetAnimalTypes()));
         }
 
-        [Route("{username}/pets")]
+        [Route("{username}/animals")]
         [HttpPut]
-        public async Task<HttpResponseMessage> Create(string userName, [FromBody] Pet pet)
+        public async Task<HttpResponseMessage> Create(string userName, [FromBody] Animal animal)
         {
-            return await Execute<ApiResponse<Pet>>(() => GameService.CreatePet(userName, pet.PetTypeId, pet.Name));
+            return await Execute<ApiResponse<Animal>>(() => GameService.CreateAnimal(userName, animal.AnimalTypeId, animal.Name));
         }
 
-        [Route("{username}/pets/{petId:long}/feed")]
+        [Route("{username}/animals/{animalId:long}/feed")]
         [HttpPost]
-        public async Task<HttpResponseMessage> Feed(string userName, long petId)
+        public async Task<HttpResponseMessage> Feed(string userName, long animalId)
         {
-            return await Execute<ApiResponse<Pet>>(() => GameService.FeedPet(userName, petId));
+            return await Execute<ApiResponse<Animal>>(() => GameService.FeedAnimal(userName, animalId));
         }
 
-        [Route("{username}/pets/{petId:long}/pet")]
+        [Route("{username}/animals/{animalId:long}/pet")]
         [HttpPost]
-        public async Task<HttpResponseMessage> Pet(string userName, long petId)
+        public async Task<HttpResponseMessage> Pet(string userName, long animalId)
         {
-            return await Execute<ApiResponse<Pet>>(() => GameService.PetPet(userName, petId));
+            return await Execute<ApiResponse<Animal>>(() => GameService.PetAnimal(userName, animalId));
         }
     }
 }

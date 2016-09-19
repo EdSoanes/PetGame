@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace PetGame.Repositories
 {
-    public interface IPetRepository
+    public interface IAnimalRepository
     {
-        Task<IEnumerable<Pet>> GetPetsByUserName(string userName);
-        Task<Pet> GetPetByUserNameAndTypeId(string userName, long petTypeId);
-        Task<Pet> GetPetByUserNameAndPetId(string userName, long petId);
-        Task<Pet> Save(Pet user);
+        Task<IEnumerable<Animal>> GetByUserName(string userName);
+        Task<Animal> GetByUserNameAndTypeId(string userName, long animalTypeId);
+        Task<Animal> GetByUserNameAndAnimalId(string userName, long animalId);
+        Task<Animal> Save(Animal user);
     }
 }

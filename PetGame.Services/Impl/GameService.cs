@@ -13,38 +13,42 @@ namespace PetGame.Services.Impl
     {
         private readonly ISysTime _sysTime;
         private readonly IUserRepository _userRepository;
-        private readonly IPetRepository _petRepository;
-        private readonly IPetTypeRepository _petTypeRepository;
+        private readonly IAnimalRepository _animalRepository;
+        private readonly IAnimalTypeRepository _animalTypeRepository;
 
         public GameService(
             ISysTime sysTime,
             IUserRepository userRepository,
-            IPetRepository petRepository,
-            IPetTypeRepository petTypeRepository)
+            IAnimalRepository animalRepository,
+            IAnimalTypeRepository animalTypeRepository)
         {
             _sysTime = sysTime;
             _userRepository = userRepository;
-            _petRepository = petRepository;
-            _petTypeRepository = petTypeRepository;
+            _animalRepository = animalRepository;
+            _animalTypeRepository = animalTypeRepository;
         }
 
         public async Task<User> GetUserByUserName(string userName, DateTime? now = null)
         {
             var user =  await _userRepository.GetUserByUserName(userName);
-            var pets = await _petRepository.GetPetsByUserName(userName);
-            var petTypes = await GetPetTypes();
-            now = now ?? _sysTime.Now;
+            var animals = await _animalRepository.GetByUserName(userName);
 
-            user.Pets = pets.ToList();
-            foreach (var pet in user.Pets)
-                PetOps.UpdateStatus(pet, petTypes.First(x => x.PetTypeId == pet.PetTypeId), now.Value);
+            if (user != null && animals != null)
+            {
+                var animalTypes = GetAnimalTypes();
+                now = now ?? _sysTime.Now;
+
+                user.Animals = animals.ToList();
+                foreach (var animal in user.Animals)
+                    AnimalOps.UpdateStatus(animal, animalTypes.First(x => x.AnimalTypeId == animal.AnimalTypeId), now.Value);
+            }
 
             return user;
         }
 
-        public async Task<IEnumerable<PetType>> GetPetTypes()
+        public IEnumerable<AnimalType> GetAnimalTypes()
         {
-            return await _petTypeRepository.GetAll();
+            return _animalTypeRepository.GetAll();
         }
 
         public async Task<ApiResponse<User>> CreateUser(User user)
@@ -62,66 +66,66 @@ namespace PetGame.Services.Impl
             return await Task.FromResult<ApiResponse<User>>(response);
         }
 
-        public async Task<ApiResponse<Pet>> CreatePet(string userName, long petTypeId, string petName)
+        public async Task<ApiResponse<Animal>> CreateAnimal(string userName, long animalTypeId, string animalName)
         {
             var now = _sysTime.Now;
             var user = await GetUserByUserName(userName, now);
-            var petType = await _petTypeRepository.GetById(petTypeId);
+            var animalType = _animalTypeRepository.GetById(animalTypeId);
             
-            var response = PetOps.CanCreateNew(user, petType, petName, _sysTime.Now);
+            var response = AnimalOps.CanCreateNew(user, animalType, animalName, _sysTime.Now);
             if (response == null)
             {
-                var pet = PetOps.New(user, petType, petName, _sysTime.Now, _sysTime.Min);
-                response = await SavePet(pet, petType, now);
+                var animal = AnimalOps.New(user, animalType, animalName, _sysTime.Now, _sysTime.Min);
+                response = await SaveAnimal(animal, animalType, now);
             }
 
-            return await Task.FromResult<ApiResponse<Pet>>(response);
+            return await Task.FromResult<ApiResponse<Animal>>(response);
         }
 
-        public async Task<ApiResponse<Pet>> FeedPet(string userName, long petId)
+        public async Task<ApiResponse<Animal>> FeedAnimal(string userName, long animalId)
         {
             var now = _sysTime.Now;
 
             var user = await GetUserByUserName(userName, now);
-            var pet = user.Pets.FirstOrDefault(x => x.PetId == petId);
-            var petType = await _petTypeRepository.GetById(pet.PetTypeId);
+            var animals = user.Animals.FirstOrDefault(x => x.AnimalId == animalId);
+            var animalType = _animalTypeRepository.GetById(animals.AnimalTypeId);
 
-            PetOps.UpdateStatus(pet, petType, now);
-            var response = PetOps.CanFeed(pet, petType, now);
+            AnimalOps.UpdateStatus(animals, animalType, now);
+            var response = AnimalOps.CanFeed(animals, animalType, now);
             if (response == null)
             {
-                PetOps.Feed(pet, petType, now);
-                response = await SavePet(pet, petType, now);
+                AnimalOps.Feed(animals, animalType, now);
+                response = await SaveAnimal(animals, animalType, now);
             }
 
-            return await Task.FromResult<ApiResponse<Pet>>(response);
+            return await Task.FromResult<ApiResponse<Animal>>(response);
         }
 
-        public async Task<ApiResponse<Pet>> PetPet(string userName, long petId)
+        public async Task<ApiResponse<Animal>> PetAnimal(string userName, long animalId)
         {
             var now = _sysTime.Now;
             var user = await _userRepository.GetUserByUserName(userName);
-            var pet = await _petRepository.GetPetByUserNameAndPetId(userName, petId);
-            var petType = await _petTypeRepository.GetById(pet.PetTypeId);
+            var animal = await _animalRepository.GetByUserNameAndAnimalId(userName, animalId);
+            var animalType = _animalTypeRepository.GetById(animal.AnimalTypeId);
 
-            PetOps.UpdateStatus(pet, petType, now);
-            var response = PetOps.CanPet(pet, petType, now);
+            AnimalOps.UpdateStatus(animal, animalType, now);
+            var response = AnimalOps.CanPet(animal, animalType, now);
             if (response == null)
             {
-                PetOps.Pet(pet, petType, now);
-                response = await SavePet(pet, petType, now);
+                AnimalOps.Pet(animal, animalType, now);
+                response = await SaveAnimal(animal, animalType, now);
             }
 
-            return await Task.FromResult<ApiResponse<Pet>>(response);
+            return await Task.FromResult<ApiResponse<Animal>>(response);
         }
 
-        private async Task<ApiResponse<Pet>> SavePet(Pet pet, PetType petType, DateTime now)
+        private async Task<ApiResponse<Animal>> SaveAnimal(Animal animal, AnimalType animalType, DateTime now)
         {
-            pet.LastUpdatedTime = now;
-            pet = await _petRepository.Save(pet);
-            PetOps.UpdateStatus(pet, petType, now);
+            animal.LastUpdatedTime = now;
+            animal = await _animalRepository.Save(animal);
+            AnimalOps.UpdateStatus(animal, animalType, now);
 
-            return new ApiResponse<Pet>(pet);
+            return new ApiResponse<Animal>(animal);
         }
     }
 }

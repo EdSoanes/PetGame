@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace PetGame.Models
 {
-    public class PetType
+    public class AnimalType
     {
         [Key]
-        public long PetTypeId { get; set; }
+        public long AnimalTypeId { get; set; }
         public string Name { get; set; }
         public int MaxHunger { get; set; }
         public int MaxHappiness { get; set; }

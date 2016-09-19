@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Routing;
 
-namespace PetGame.Specs.PetsController
+namespace PetGame.Specs.AnimalsController
 {
     [Subject("creating a user")]
-    class when_GETting_a_list_of_pet_types : WithSubject<PetGame.Controllers.PetsController>
+    class when_GETting_a_list_of_animal_types : WithSubject<PetGame.Controllers.AnimalsController>
     {
         Establish context = () =>
         {
@@ -25,27 +25,26 @@ namespace PetGame.Specs.PetsController
 
             WebApiConfig.Register(Subject.Configuration);
 
-            The<IGameService>().WhenToldTo(dc => dc.GetPetTypes()).Return(Task.FromResult<IEnumerable<PetType>>( new List<PetType>
-                {
-                    new PetType { PetTypeId = 1, Name = "Name 1" },
-                    new PetType { PetTypeId = 2, Name = "Name 2" }
-                }));
-
+            The<IGameService>().WhenToldTo(dc => dc.GetAnimalTypes()).Return( new List<AnimalType>
+            {
+                new AnimalType { AnimalTypeId = 1, Name = "Name 1" },
+                new AnimalType { AnimalTypeId = 2, Name = "Name 2" }
+            });
         };
 
-        Because of = () => result = Subject.GetPetTypes().Result;
+        Because of = () => result = Subject.GetAnimalTypes().Result;
 
         private static HttpResponseMessage result;
 
         It is_a_valid_response = () => result.IsSuccessStatusCode.ShouldBeTrue();
 
-        It has_a_list_of_2_pet_types = () =>
+        It has_a_list_of_2_animal_types = () =>
             {
-                IEnumerable<PetType> petTypes;
-                result.TryGetContentValue<IEnumerable<PetType>>(out petTypes);
+                IEnumerable<AnimalType> animalTypes;
+                result.TryGetContentValue<IEnumerable<AnimalType>>(out animalTypes);
 
-                petTypes.ShouldNotBeNull();
-                petTypes.Count().ShouldEqual(2);
+                animalTypes.ShouldNotBeNull();
+                animalTypes.Count().ShouldEqual(2);
             };
     }
 }

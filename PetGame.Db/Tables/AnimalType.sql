@@ -1,6 +1,6 @@
-﻿CREATE TABLE [dbo].[PetType]
+﻿CREATE TABLE [dbo].[AnimalType]
 (
-	[PetTypeId]					BIGINT			IDENTITY (1, 1) NOT NULL,
+	[AnimalTypeId]					BIGINT			IDENTITY (1, 1) NOT NULL,
 	[Name]						NVARCHAR(200)	NOT NULL,
 	[MaxHunger]					INT				NOT NULL,
 	[HungerIncreasePerMin]		INT				NOT NULL,
@@ -11,5 +11,5 @@
 	[HappinessIncreasePerPet]	INT				NOT NULL,
 	[PettingInterval]			INT				NOT NULL
 
-	CONSTRAINT [PK_PetType] PRIMARY KEY CLUSTERED ([PetTypeId] ASC)	
+	CONSTRAINT [PK_AnimalType] PRIMARY KEY CLUSTERED ([AnimalTypeId] ASC)	
 )

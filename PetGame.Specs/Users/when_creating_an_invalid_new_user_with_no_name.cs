@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace PetGame.Specs.Users
 {
-    [Subject("creating an invalid user")]
     class when_creating_an_invalid_new_user_with_no_name : WithSubject<GameService>
     {
         Establish context = () =>

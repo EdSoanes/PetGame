@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace PetGame.Specs.Users
 {
-    [Subject("creating a user")]
     class when_creating_a_valid_new_user : WithSubject<GameService>
     {
         Establish context = () =>

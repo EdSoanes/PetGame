@@ -20,8 +20,8 @@ namespace PetGame
             {
                 c.For<ISysTime>().Use<SysTime>().Singleton();
                 c.For<IUserRepository>().Use<UserRepository>().Singleton();
-                c.For<IPetTypeRepository>().Use<PetTypeRepository>().Singleton();
-                c.For<IPetRepository>().Use<PetRepository>().Singleton();
+                c.For<IAnimalTypeRepository>().Use<AnimalTypeRepository>().Singleton();
+                c.For<IAnimalRepository>().Use<AnimalRepository>().Singleton();
                 c.For<IGameService>().Use<GameService>().Singleton();
             });
 
