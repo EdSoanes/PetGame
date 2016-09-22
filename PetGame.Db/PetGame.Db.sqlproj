@@ -60,11 +60,14 @@
     <Folder Include="Properties" />
     <Folder Include="Tables" />
     <Folder Include="Scripts" />
+    <Folder Include="Programmability" />
+    <Folder Include="Programmability\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\User.sql" />
     <Build Include="Tables\AnimalType.sql" />
     <Build Include="Tables\Animal.sql" />
+    <Build Include="Programmability\Stored Procedures\GetUserByUserName.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PetGame.Db.publish.xml" />

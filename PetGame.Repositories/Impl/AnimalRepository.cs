@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 
 namespace PetGame.Repositories.Impl
 {
@@ -21,7 +23,15 @@ namespace PetGame.Repositories.Impl
                         INNER JOIN [dbo].[User] u ON u.UserId = p.UserId
                         WHERE u.UserName = @userName";
 
-            return await BaseGetAsync<Animal>(sql, new { userName = userName });
+            //return await BaseGetAsync<Animal>(sql, new { userName = userName });
+
+            using (var conn = new SqlConnection(ConnString))
+            {
+                await conn.OpenAsync();
+                var res = await conn.QueryAsync<Animal>(sql, new { userName });
+
+                return res;
+            }
         }
 
         public async Task<Animal> GetByUserNameAndTypeId(string userName, long animalTypeId)
@@ -30,8 +40,16 @@ namespace PetGame.Repositories.Impl
                         INNER JOIN [dbo].[User] u ON u.UserId = p.UserId
                         WHERE u.UserName = @userName AND p.AnimalTypeId = @animalTypeId";
 
-            var res = await BaseGetAsync<Animal>(sql, new { userName = userName, animalTypeId = animalTypeId });
-            return res.FirstOrDefault();
+            //var res = await BaseGetAsync<Animal>(sql, new { userName = userName, animalTypeId = animalTypeId });
+            //return res.FirstOrDefault();
+
+            using (var conn = new SqlConnection(ConnString))
+            {
+                await conn.OpenAsync();
+                var res = await conn.QueryFirstOrDefaultAsync<Animal>(sql, new { userName });
+
+                return res;
+            }
         }
 
         public async Task<Animal> GetByUserNameAndAnimalId(string userName, long animalId)

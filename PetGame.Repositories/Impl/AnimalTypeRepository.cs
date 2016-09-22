@@ -21,11 +21,8 @@ namespace PetGame.Repositories.Impl
 
         public AnimalType GetById(long animalTypeId)
         {
-            lock (_lockObject)
-            {
-                var animalTypes = GetAll();
-                return animalTypes.FirstOrDefault(x => x.AnimalTypeId == animalTypeId);
-            }
+            var animalTypes = GetAll();
+            return animalTypes.FirstOrDefault(x => x.AnimalTypeId == animalTypeId);
         }
 
         public IEnumerable<AnimalType> GetAll()
