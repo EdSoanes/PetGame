@@ -34,7 +34,7 @@ namespace PetGame.Repositories.Impl
                     user.Animals = multi.Read<Animal>().Where(x => x.UserId == user.UserId);
 
                     return user;
-                }
+                } 
 
                 //using (var multi = await conn.QueryMultipleAsync("GetUserByUserName", new { userName }, commandType: CommandType.StoredProcedure))
                 //{
