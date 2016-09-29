@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetGame", "PetGame\PetGame.csproj", "{B68224B7-6763-4E0D-895D-7C7A57D495E1}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetGame.Specs", "PetGame.Specs\PetGame.Specs.csproj", "{A6161D9B-514C-4C87-80CE-57BF2FEAEE77}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetGame.Tests", "PetGame.Tests\PetGame.Tests.csproj", "{7255CCCC-768B-4086-9523-317427A202F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetGame.OAuth", "PetGame.OAuth\PetGame.OAuth.csproj", "{02452940-1172-4AB5-9035-7884CEE67F66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{7255CCCC-768B-4086-9523-317427A202F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7255CCCC-768B-4086-9523-317427A202F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7255CCCC-768B-4086-9523-317427A202F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02452940-1172-4AB5-9035-7884CEE67F66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02452940-1172-4AB5-9035-7884CEE67F66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02452940-1172-4AB5-9035-7884CEE67F66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02452940-1172-4AB5-9035-7884CEE67F66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

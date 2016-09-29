@@ -10,7 +10,7 @@ using System.Web.Http;
 
 namespace PetGame.Controllers
 {
-    [RoutePrefix("users")]
+    [RoutePrefix("user")]
     public class UsersController : BaseController
     {
         public UsersController(IGameService gameService)
@@ -18,17 +18,23 @@ namespace PetGame.Controllers
         {
         }
 
-        [Route("{userName}")]
+        [Route("")]
         [HttpGet]
-        public async Task<HttpResponseMessage> Get(string userName)
+        [Authorize]
+
+        public async Task<HttpResponseMessage> Get()
         {
+            var userName = GetUserName();
             return await Execute<User>(() => GameService.GetUserByUserName(userName));
         }
 
         [Route("")]
         [HttpPut]
+        [Authorize]
+
         public async Task<HttpResponseMessage> Put([FromBody] User user)
         {
+            user.UserName = GetUserName();
             return await Execute<ApiResponse<User>>(() => GameService.CreateUser(user));
         }
     }

@@ -30,8 +30,9 @@ namespace PetGame.Repositories.Impl
 
                 using (var multi = await conn.QueryMultipleAsync(sql, new { userName }))
                 {
-                    var user = multi.Read<User>().FirstOrDefault();
-                    user.Animals = multi.Read<Animal>().Where(x => x.UserId == user.UserId);
+                    var user = multi.ReadFirstOrDefault<User>();
+                    if (user != null)
+                        user.Animals = multi.Read<Animal>();
 
                     return user;
                 } 

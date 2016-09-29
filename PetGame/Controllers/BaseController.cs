@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
@@ -18,6 +19,14 @@ namespace PetGame.Controllers
         public BaseController(IGameService gameService)
         {
             GameService = gameService;
+        }
+
+        protected string GetUserName()
+        {
+            var claimsPrincipal = User as ClaimsPrincipal;
+            var userName = claimsPrincipal?.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+
+            return userName;
         }
 
         protected async Task<HttpResponseMessage> Execute<T>(Func<Task<T>> func) where T : class
