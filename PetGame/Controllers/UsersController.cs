@@ -21,7 +21,6 @@ namespace PetGame.Controllers
         [Route("")]
         [HttpGet]
         [Authorize]
-
         public async Task<HttpResponseMessage> Get()
         {
             var userName = GetUserName();
@@ -31,7 +30,6 @@ namespace PetGame.Controllers
         [Route("")]
         [HttpPut]
         [Authorize]
-
         public async Task<HttpResponseMessage> Put([FromBody] User user)
         {
             user.UserName = GetUserName();

@@ -1,5 +1,6 @@
 ﻿using Machine.Fakes;
 using Machine.Specifications;
+using PetGame.App_Start;
 using PetGame.Controllers;
 using PetGame.Models;
 using PetGame.Repositories;
@@ -23,7 +24,7 @@ namespace PetGame.Specs.AnimalsController
             Subject.Request = new HttpRequestMessage();
             Subject.Configuration = new HttpConfiguration();
 
-            WebApiConfig.Register(Subject.Configuration);
+            Startup.Register(Subject.Configuration);
 
             The<IGameService>().WhenToldTo(dc => dc.GetAnimalTypes()).Return( new List<AnimalType>
             {
