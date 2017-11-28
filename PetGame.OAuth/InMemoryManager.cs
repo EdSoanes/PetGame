@@ -62,6 +62,11 @@ namespace PetGame.OAuth
                 {
                     Name = "read",
                     DisplayName = "Read User Data"
+                },
+                                new Scope
+                {
+                    Name = "write",
+                    DisplayName = "Write User Data"
                 }
             };
         }
